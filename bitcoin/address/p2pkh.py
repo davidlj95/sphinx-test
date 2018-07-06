@@ -1,7 +1,13 @@
-"""Models P2PKH Addresses.
+"""Models P2PKH_ Addresses.
 
-A P2PKH address is used by user to send bitcoins to another user who controls
+.. _P2PKH: https://en.bitcoin.it/wiki/Transaction#Pay-to-PubkeyHash
+
+A P2PKH_ address is used by user to send bitcoins to another user who controls
 the private key behind the public key (whose hash appears in the address)
+
+Most information was extracted from the `Bitcoin Wiki`__.
+
+__ P2PKH_
 """
 
 # Constants
@@ -29,38 +35,42 @@ class P2PKHAddress:
     def __init__(self, public_key_hash: bytes) -> None:
         """Initializes a P2PKH given its public key hash.
 
+        Modifies the attribute :py:attr:`_script_hash`
+
         Args:
             public_key_hash: public key hash to set
 
         Raises:
             AssertionError: public_key_hash argument is not a bytes object
-            AddressPKHLengthError: public_key_hash argument hsa not the
+            AddressPKHLengthError: public_key_hash argument has not the
                 proper length of a public key hash
         """
         self._public_key_hash = None
         self.public_key_hash = public_key_hash
 
+    def do_things(self, obj: str) -> bytes:
+        """Does some things.
+
+        Args:
+            obj: object of options
+
+        Returns:
+            things modified by :py:obj:`obj` as bytes
+        """
+        return bytes()
+
     @property
     def public_key_hash(self) -> bytes:
         """Returns the public key hash stored in the address.
 
-        Returns:
-            public key hash bytes
+        :getter: Returns the public key hash as bytes object
+        :setter: Sets the public key hash, while verifying the length and
+                 type
         """
         return self._public_key_hash
 
     @public_key_hash.setter
     def public_key_hash(self, public_key_hash: bytes) -> None:
-        """Sets the public key hash of the address.
-
-        Args:
-            public_key_hash: public key hash to set
-
-        Raises:
-            AssertionError: public_key_hash argument is not a bytes object
-            AddressPKHLengthError: public_key_hash argument hsa not the
-                proper length of a public key hash
-        """
         assert isinstance(public_key_hash, bytes), \
             "Public key hash must be exactly %d bytes" % PKH_LENGTH
 
@@ -76,6 +86,10 @@ def from_hex(public_key_hash_hex: str) -> P2PKHAddress:
 
     Converts the hexadecimal string into bytes and then uses those bytes to
     create a P2PKH address.
+
+
+    >>> 1+1
+    2
 
     Args:
         public_key_hash_hex: string containing public key hash in hexadecimal
